@@ -1,0 +1,30 @@
+-- Create a trigger that updates the passenger_info table with any new passenger records, need to check to make sure the record doesn't already exist
+-- DELIMITER //
+-- CREATE TRIGGER update_passenger_info
+-- AFTER INSERT ON airline_and_passenger_data
+-- FOR EACH ROW
+-- BEGIN
+-- 	IF NOT EXISTS (SELECT 1 FROM passenger_info WHERE PassengerID = NEW.PassengerID) THEN
+-- 		INSERT INTO passenger_info (PassengerID, FirstName, LastName, Gender, Age, Nationality)
+--        VALUES (NEW.PassengerID, NEW.FirstName, NEW.LastName, NEW.Gender, NEW.Age, NEW.Nationality);
+-- 	ELSE
+-- 		UPDATE passenger_info
+--        SET FirstName = NEW.FirstName, LastName = NEW.LastName, Gender = NEW.Gender, Age = NEW.Age, Nationality = NEW.Nationality
+-- 		WHERE PassengerID = NEW.PassengerID;
+-- 	END IF;
+-- END;
+-- //
+-- DELIMITER ;
+
+
+-- Create a trigger that updates the cancelled_flights_tracker table with new records when flight status is cancelled
+-- DELIMITER //
+-- CREATE TRIGGER update_cancelled_flights_tracker
+-- AFTER INSERT ON airline_and_passenger_data
+-- FOR EACH ROW
+-- BEGIN
+-- 	INSERT INTO cancelled_flights_tracker (PassengerID, FirstName, LastName, FlightStatus, Message)
+-- 		VALUES (NEW.PassengerID, NEW.FirstName, NEW.LastName, NEW.FlightStatus, CONCAT("Flight was ", `FlightStatus`, " for passenger ", `FirstName`, " ", `LastName`));
+-- END;
+-- //
+-- DELIMITER ;
